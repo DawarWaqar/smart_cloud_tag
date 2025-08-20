@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "smart_cloud_tag"
+version = "0.1.0"
+description = "Automatically tag cloud storage objects using LLM analysis"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Your Name", email = "your.email@example.com"}
+]
+keywords = ["aws", "s3", "llm", "openai", "tagging", "cloud-storage"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Filesystems",
+    "Topic :: Text Processing :: Linguistic",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "openai>=1.0.0",
+    "boto3>=1.26.0",
+    "pydantic>=2.0.0",
+    "python-dotenv>=1.0.0",
+    "python-magic>=0.4.27",
+]
+
+[project.optional-dependencies]
+# Additional cloud providers
+azure = [
+    "azure-storage-blob>=12.0.0",
+]
+gcp = [
+    "google-cloud-storage>=2.0.0",
+]
+
+# Additional LLM providers
+anthropic = [
+    "anthropic>=0.7.0",
+]
+gemini = [
+    "google-generativeai>=0.3.0",
+]
+
+
+
+dev = [
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/smart_cloud_tag"
+Repository = "https://github.com/yourusername/smart_cloud_tag"
+Issues = "https://github.com/yourusername/smart_cloud_tag/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/smart_cloud_tag"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+
+
