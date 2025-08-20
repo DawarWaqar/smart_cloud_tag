@@ -7,7 +7,7 @@ Python, LLMs (OpenAI, Gemini, Anthropic), Azure Blob Storage, Google Cloud Stora
 
 ## Architecture Digram
 
-![Architecture Diagram](assets/architecture.png)
+![Architecture Diagram](assets/Architecture.png)
 
 ## Example
 
