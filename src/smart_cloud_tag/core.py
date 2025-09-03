@@ -63,12 +63,9 @@ class SmartCloudTagger:
             )
 
         if not llm_model:
-            default_llm_model = {
-                "openai": "gpt-4.1",
-                "anthropic": "claude-3-5-sonnet-20241022",
-                "gemini": "gemini-2.5-pro",
-            }
-            self.llm_model = default_llm_model[self.llm_provider_type]
+            from .config import DEFAULT_MODELS
+
+            self.llm_model = DEFAULT_MODELS[self.llm_provider_type]
 
         self.config = TaggingConfig(
             llm_model=self.llm_model,

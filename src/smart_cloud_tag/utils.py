@@ -106,6 +106,8 @@ def merge_tags(
 def format_llm_prompt(
     tags: Dict[str, Optional[List[str]]], content_preview: str, filename: str
 ) -> str:
+    from .config import DEFAULT_PROMPT_TEMPLATE
+
     if not filename or not filename.strip():
         raise ValueError("filename is required and cannot be empty")
 
@@ -123,33 +125,12 @@ def format_llm_prompt(
     constraints_text = "\n".join(constraints)
     filename_context = f"\nFile being analyzed: {filename}\n"
 
-    prompt = f"""Analyze the following content and generate exactly {len(tag_keys)} tag values.
-
-Tag keys and constraints:
-{constraints_text}{filename_context}
-Content preview:
-{content_preview}
-
-Instructions:
-1. Generate exactly {len(tag_keys)} values, one for each tag key
-2. Return only the values in order, separated by commas
-3. Keep values concise (1-3 words when possible)
-4. Make values relevant and descriptive for the content
-5. For tags with allowed values, use only those values
-6. For tags without allowed values, deduce appropriate values based on content and key name
-7. If you see any abbreviations, interpret them according to context, following these examples:
-    Example: "BOL#: 7782-CA-TOR-2025" → "bill_of_lading" (a shipping document)
-    Example: "PO# 5567-AB" → "purchase_order" (a procurement document)
-
-File Context Guidelines:
-- Consider the filename as additional context for tagging decisions
-- Use filename context to inform your understanding of the document type and content
-- However, if the filename is not relevant to the content, ignore it
-
-Example output format:
-value1, value2, value3
-
-Generated tags:"""
+    prompt = DEFAULT_PROMPT_TEMPLATE.format(
+        num_tags=len(tag_keys),
+        constraints_text=constraints_text,
+        filename_context=filename_context,
+        content_preview=content_preview,
+    )
 
     return prompt
 

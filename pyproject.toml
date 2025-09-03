@@ -4,12 +4,12 @@ build-backend = "hatchling.build"
 
 [project]
 name = "smart_cloud_tag"
-version = "0.1.0"
+version = "0.1.1"
 description = "AI-powered cloud storage object tagging using LLMs"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Your Name", email = "your.email@example.com"}
+    {name = "Dawar Waqar", email = "dawarwaqar71@gmail.com"}
 ]
 keywords = ["aws", "s3", "azure", "gcp", "llm", "openai", "anthropic", "gemini", "tagging", "cloud-storage"]
 classifiers = [
@@ -59,6 +59,7 @@ anthropic = [
 ]
 gemini = [
     "google-generativeai>=0.3.0",
+    "async-timeout>=4.0.0",
 ]
 
 # All optional dependencies
@@ -67,6 +68,7 @@ all = [
     "google-cloud-storage>=2.0.0",
     "anthropic>=0.7.0",
     "google-generativeai>=0.3.0",
+    "async-timeout>=4.0.0",
 ]
 
 # Development dependencies

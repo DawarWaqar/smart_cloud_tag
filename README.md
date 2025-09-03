@@ -1,15 +1,25 @@
 # Smart Cloud Tag
 
-AI-powered cloud storage object tagging using Large Language Models.
+Automatically tag cloud files across AWS, Azure, and Google Cloud with the least amount of effort.
+
+## Use Case
+
+`smart-cloud-tag` is a multi-cloud tagging solution that automatically applies tags to objects in batch across AWS S3, Azure Blob Storage, and Google Cloud Storage using LLMs (GenAI). It provides end-to-end automation, from reading file content to applying tags. As expected, LLMs do a great job in predicting tags. This tool eradicates the need to manually go through files one by one to add metadata to them, or to build your own custom solution. Now the work you would need to do to tag several objects in the cloud of your choice, would take less time and effort than making your morning cup of coffee.
+
+## Architecture
+
+![Architecture Diagram](https://raw.githubusercontent.com/DawarWaqar/smart_cloud_tag/main/assets/Architecture.png)
 
 ## Features
 
 - **Multi-Cloud Support**: AWS S3, Azure Blob Storage, Google Cloud Storage
 - **AI-Powered**: Uses OpenAI, Anthropic Claude, or Google Gemini for intelligent tagging
+- **File Type Support**: Currently supports .txt, .json, .csv, and .md files
+- **Simple & Flexible**: Designed to work out-of-the-box while remaining flexible for custom requirements
 - **Auto-Detection**: Automatically detects storage provider from URI prefix
 - **Batch Processing**: Process multiple files with one command
-- **Preview Mode**: Preview tags before applying them
-- **Custom Prompts**: Use your own LLM prompt templates
+- **Preview Mode**: Preview tags before applying them (optional)
+- **Custom Prompts**: Ability to use your own custom LLM prompt templates (optional)
 
 ## Quick Start
 
@@ -60,20 +70,16 @@ pip install smart_cloud_tag[gcp,gemini]       # GCP + Gemini
 ```python
 from smart_cloud_tag import SmartCloudTagger
 
-# Define your tag schema
-tags = {
-    "document_type": ["invoice", "contract", "report"],
-    "department": ["finance", "legal", "hr"],
-    "confidential": ["true", "false"]
-}
-
-# Initialize tagger (provider auto-detected from URI)
+# Initialize the tagger
 tagger = SmartCloudTagger(
-    storage_uri="s3://my-bucket",  # or "az://container" or "gs://bucket"
-    tags=tags
+    storage_uri="az://telehealthcanada",  # target bucket location
+    tags={
+        "protected_health_information": ["T", "F"],  # allowed values are T/F
+        "document_type": ["chat_transcript", "lab_summary", "claim"],
+    },  # tag schema 
 )
 
-# Preview tags before applying
+# Preview tags before applying (optional)
 preview_result = tagger.preview_tags()
 print(f"Preview: {preview_result.summary}")
 
@@ -116,32 +122,32 @@ GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
 
 | Provider | Default Model | Environment Variable |
 |----------|---------------|---------------------|
-| OpenAI | `gpt-4.1` | `API_KEY` |
-| Anthropic | `claude-3-5-sonnet-20241022` | `API_KEY` |
+| OpenAI | `gpt-5` | `API_KEY` |
+| Anthropic | `claude-3-opus-4.1` | `API_KEY` |
 | Google Gemini | `gemini-1.5-pro` | `API_KEY` |
+
+
 
 ## Advanced Usage
 
-### Custom Prompt Templates
+### SmartCloudTagger Parameters
 
-```python
-custom_prompt = """
-Analyze this document and assign tags based on content.
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `storage_uri` | `str` | Yes | - | Storage location URI (s3://, az://, or gs://) |
+| `tags` | `Dict[str, Optional[List[str]]]` | Yes | - | Tag schema with keys and allowed values. If allowed values are missing for a key, LLM will deduce appropriate values |
+| `llm_model` | `str` | No | Provider-specific | LLM model to use (see supported models below) |
+| `llm_provider` | `str` | No | `"openai"` | LLM provider: "openai", "anthropic", or "gemini" |
+| `max_bytes` | `Optional[int]` | No | `5000` | Maximum bytes to read from each object/file |
+| `custom_prompt_template` | `Optional[str]` | No | `config.py` | Custom prompt template. Must include placeholders: `{content}`, `{filename}`, `{tags}` (see config.py for default) |
 
-Filename: {filename}
-Content: {content}
-Tags to assign: {tags}
+### Default Models by Provider
 
-Focus on document classification and confidentiality.
-Return only tag values separated by commas.
-"""
-
-tagger = SmartCloudTagger(
-    storage_uri="s3://my-bucket",
-    tags=tags,
-    custom_prompt_template=custom_prompt
-)
-```
+| Provider | Default Model |
+|----------|---------------|
+| OpenAI | `gpt-5` |
+| Anthropic | `claude-3-opus-4.1` |
+| Google Gemini | `gemini-1.5-pro` |
 
 ### Different LLM Providers
 
@@ -161,13 +167,9 @@ tagger = SmartCloudTagger(
 )
 ```
 
-## Architecture
 
-![Architecture Diagram](assets/Architecture.png)
 
-## Example
 
-![Example](assets/Code.png)
 
 ## Development
 
@@ -190,10 +192,6 @@ python -m pytest tests/
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ## Support
 
