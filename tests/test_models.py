@@ -24,12 +24,12 @@ class TestModels:
 
     def test_tagging_config_valid(self):
         config = TaggingConfig(
-            llm_model="gpt-4.1",
+            llm_model="gpt-5",
             storage_uri="s3://test-bucket",
             tags={"type": ["document", "image"]},
             max_bytes=5000,
         )
-        assert config.llm_model == "gpt-4.1"
+        assert config.llm_model == "gpt-5"
         assert config.storage_uri == "s3://test-bucket"
         assert config.tags == {"type": ["document", "image"]}
         assert config.max_bytes == 5000
@@ -37,7 +37,7 @@ class TestModels:
     def test_tagging_config_invalid_tags_count(self):
         with pytest.raises(ValidationError):
             TaggingConfig(
-                llm_model="gpt-4.1",
+                llm_model="gpt-5",
                 storage_uri="s3://test-bucket",
                 tags={f"tag{i}": ["value"] for i in range(10)},
                 max_bytes=5000,
@@ -46,7 +46,7 @@ class TestModels:
     def test_tagging_config_empty_tags(self):
         with pytest.raises(ValidationError):
             TaggingConfig(
-                llm_model="gpt-4.1",
+                llm_model="gpt-5",
                 storage_uri="s3://test-bucket",
                 tags={},
                 max_bytes=5000,
@@ -55,7 +55,7 @@ class TestModels:
     def test_tagging_config_invalid_max_bytes(self):
         with pytest.raises(ValidationError):
             TaggingConfig(
-                llm_model="gpt-4.1",
+                llm_model="gpt-5",
                 storage_uri="s3://test-bucket",
                 tags={"type": ["document"]},
                 max_bytes=0,
@@ -75,7 +75,7 @@ class TestModels:
 
     def test_tagging_result(self):
         config = TaggingConfig(
-            llm_model="gpt-4.1",
+            llm_model="gpt-5",
             storage_uri="s3://test-bucket",
             tags={"type": ["document"]},
         )
@@ -91,7 +91,7 @@ class TestModels:
 
     def test_tagging_result_add_result(self):
         config = TaggingConfig(
-            llm_model="gpt-4.1",
+            llm_model="gpt-5",
             storage_uri="s3://test-bucket",
             tags={"type": ["document"]},
         )
@@ -108,7 +108,7 @@ class TestModels:
 
     def test_tagging_result_get_summary_stats(self):
         config = TaggingConfig(
-            llm_model="gpt-4.1",
+            llm_model="gpt-5",
             storage_uri="s3://test-bucket",
             tags={"type": ["document"]},
         )

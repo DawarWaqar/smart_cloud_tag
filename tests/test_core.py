@@ -104,7 +104,7 @@ class TestSmartCloudTagger:
             with patch("smart_cloud_tag.core.OpenAIProvider") as mock_llm:
                 with patch.dict("os.environ", {"API_KEY": "test-key"}):
                     mock_instance = Mock()
-                    mock_instance.get_model_name.return_value = "gpt-4.1"
+                    mock_instance.get_model_name.return_value = "gpt-5"
                     mock_instance.__class__.__name__ = "OpenAIProvider"
                     mock_llm.return_value = mock_instance
 
@@ -114,7 +114,7 @@ class TestSmartCloudTagger:
 
                     info = tagger.get_llm_info()
                     assert info["provider"] == "OpenAIProvider"
-                    assert info["model"] == "gpt-4.1"
+                    assert info["model"] == "gpt-5"
 
     def test_get_tags_info(self):
         with patch("smart_cloud_tag.core.AWSS3Provider"):

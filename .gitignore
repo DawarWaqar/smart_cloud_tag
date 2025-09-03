@@ -8,3 +8,4 @@ venv/
 *.backup
 .DS_Store
 example.py
+dist/
