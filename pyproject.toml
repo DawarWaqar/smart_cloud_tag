@@ -5,13 +5,13 @@ build-backend = "hatchling.build"
 [project]
 name = "smart_cloud_tag"
 version = "0.1.0"
-description = "Automatically tag cloud storage objects using LLM analysis"
+description = "AI-powered cloud storage object tagging using LLMs"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
     {name = "Your Name", email = "your.email@example.com"}
 ]
-keywords = ["aws", "s3", "llm", "openai", "tagging", "cloud-storage"]
+keywords = ["aws", "s3", "azure", "gcp", "llm", "openai", "anthropic", "gemini", "tagging", "cloud-storage"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -25,6 +25,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: System :: Filesystems",
     "Topic :: Text Processing :: Linguistic",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 requires-python = ">=3.8"
 dependencies = [
@@ -36,6 +37,14 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# Core providers (included by default, but listed for completeness)
+aws = [
+    "boto3>=1.26.0",
+]
+openai = [
+    "openai>=1.0.0",
+]
+
 # Additional cloud providers
 azure = [
     "azure-storage-blob>=12.0.0",
@@ -52,19 +61,28 @@ gemini = [
     "google-generativeai>=0.3.0",
 ]
 
+# All optional dependencies
+all = [
+    "azure-storage-blob>=12.0.0",
+    "google-cloud-storage>=2.0.0",
+    "anthropic>=0.7.0",
+    "google-generativeai>=0.3.0",
+]
 
-
+# Development dependencies
 dev = [
     "black>=23.0.0",
     "isort>=5.12.0",
     "mypy>=1.0.0",
     "ruff>=0.1.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/smart_cloud_tag"
-Repository = "https://github.com/yourusername/smart_cloud_tag"
-Issues = "https://github.com/yourusername/smart_cloud_tag/issues"
+Homepage = "https://github.com/DawarWaqar/smart_cloud_tag"
+Repository = "https://github.com/DawarWaqar/smart_cloud_tag"
+Issues = "https://github.com/DawarWaqar/smart_cloud_tag/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/smart_cloud_tag"]
@@ -83,5 +101,21 @@ warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
 
+[tool.coverage.run]
+source = ["src/smart_cloud_tag"]
+omit = ["*/tests/*"]
 
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]

@@ -1,10 +1,5 @@
-"""
-Storage providers for the smart_cloud_tag package.
-"""
-
 from .base import StorageProvider
 
-# Try to import AWS provider
 try:
     from .aws_s3 import AWSS3Provider
 
@@ -13,7 +8,6 @@ except ImportError:
     AWS_AVAILABLE = False
     AWSS3Provider = None
 
-# Try to import Azure provider
 try:
     from .azure_blob import AzureBlobProvider
 
@@ -22,7 +16,6 @@ except ImportError:
     AZURE_AVAILABLE = False
     AzureBlobProvider = None
 
-# Try to import GCS provider
 try:
     from .gcs_provider import GCSProvider
 

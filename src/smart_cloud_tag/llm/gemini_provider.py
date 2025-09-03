@@ -1,7 +1,3 @@
-"""
-Google Gemini LLM provider implementation.
-"""
-
 from typing import Dict, List, Optional
 
 try:
@@ -19,24 +15,10 @@ from .base import LLMProvider
 
 
 class GeminiProvider(LLMProvider):
-    """
-    Google Gemini LLM provider implementation.
-    """
-
     def __init__(self, model: str, api_key: str):
-        """
-        Initialize Gemini provider.
-
-        Args:
-            model: Gemini model name (e.g., "gemini-1.5-pro")
-            api_key: Google API key
-
-        Raises:
-            LLMError: If initialization fails
-        """
         if not GEMINI_AVAILABLE:
             raise LLMError(
-                "Gemini not available. Install with: pip install smart-cloud[gemini]"
+                "Gemini not available. Install with: pip install smart_cloud_tag[gemini]"
             )
 
         self.model = model
@@ -49,20 +31,7 @@ class GeminiProvider(LLMProvider):
             raise LLMError(f"Failed to initialize Gemini client: {str(e)}")
 
     def generate_tags(self, request: LLMRequest) -> LLMResponse:
-        """
-        Generate tags using Google Gemini.
-
-        Args:
-            request: LLM request with tags, content, and filename
-
-        Returns:
-            LLM response with generated tags
-
-        Raises:
-            LLMError: If generation fails
-        """
         try:
-            # Format the prompt
             if request.custom_prompt_template:
                 prompt = format_custom_llm_prompt(
                     request.custom_prompt_template,
@@ -75,7 +44,6 @@ class GeminiProvider(LLMProvider):
                     request.tags, request.content, request.filename
                 )
 
-            # Send to Gemini API
             response = self.model_instance.generate_content(
                 prompt,
                 generation_config=genai.types.GenerationConfig(
@@ -83,10 +51,8 @@ class GeminiProvider(LLMProvider):
                 ),
             )
 
-            # Extract content from response
             content = response.text if response.text else ""
 
-            # Parse the response into tag values
             from ..utils import parse_llm_response
 
             tag_keys = list(request.tags.keys())
@@ -98,19 +64,7 @@ class GeminiProvider(LLMProvider):
             raise LLMError(f"Failed to generate tags with Gemini: {str(e)}")
 
     def is_available(self) -> bool:
-        """
-        Check if Gemini provider is available.
-
-        Returns:
-            True if available
-        """
         return GEMINI_AVAILABLE
 
     def get_model_name(self) -> str:
-        """
-        Get the model name.
-
-        Returns:
-            Model name
-        """
         return self.model

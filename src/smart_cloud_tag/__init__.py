@@ -1,7 +1,3 @@
-"""
-Smart Cloud Tag - Automatically tag cloud storage objects using LLM analysis.
-"""
-
 from .core import SmartCloudTagger
 from .models import TaggingResult, TaggingConfig
 from .exceptions import (

@@ -4,6 +4,7 @@ data/
 __pycache__/
 *.pyc
 venv/
-.linear-passkey-469401-s3.json
+*.json
 *.backup
 .DS_Store
+example.py
